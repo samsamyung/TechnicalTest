@@ -34,3 +34,20 @@ dependencies {
 
 
 }
+
+task fatJar(type: Jar) {
+    manifest.from jar.manifest
+    archiveClassifier = 'all'
+    from {
+        configurations.runtime.collect { it.isDirectory() ? it : zipTree(it) }
+    } {
+        exclude "META-INF/*.SF"
+        exclude "META-INF/*.DSA"
+        exclude "META-INF/*.RSA"
+    }
+    with jar
+    manifest {
+        attributes 'Implementation-Title': 'Gradle Quickstart', 'Implementation-Version': version
+        attributes 'Main-Class': 'com.samyung.Start'
+    }
+}
