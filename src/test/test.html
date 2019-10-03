@@ -1,0 +1,334 @@
+<html>
+
+<head>
+	<script language="javascript" >
+
+		function send(msg, callback) {
+			document.getElementById("out").value = msg
+
+			const http = new XMLHttpRequest();
+			const url='http://localhost:8080';
+			
+			http.onreadystatechange = (e) => {
+				const response = http.responseText;
+				if (response == null || response=='') {
+					return;
+				}
+
+				document.getElementById("in").value = JSON.stringify(JSON.parse(response), null, 4);
+				callback(response)
+			}
+
+			http.open("POST", url);
+			http.overrideMimeType("text/plain; charset=utf-8");
+			http.send(msg);
+		}
+
+		function getCustomers() {
+			const id = document.getElementById("getCustomers_id").value;
+			const name = document.getElementById("getCustomers_name").value;
+			const status = document.getElementById("getCustomers_status").value;
+			const creationDateTimeFrom = document.getElementById("getCustomers_creationDateTimeFrom").value;
+			const creationDateTimeTo = document.getElementById("getCustomers_creationDateTimeTo").value;
+			const phone = document.getElementById("getCustomers_phone").value;
+			const address = document.getElementById("getCustomers_address").value;
+			const email = document.getElementById("getCustomers_email").value;
+
+
+			const msg = JSON.stringify({
+				commandType: "GET_CUSTOMERS",
+				param: JSON.stringify({
+					id,
+					name,
+					status,
+					creationDateTimeFrom,
+					creationDateTimeTo,
+					phone,
+					address,
+					email
+				})
+			}, null, 4);
+
+			send(msg, (resultMsg) => {
+				// const result = JSON.parse(resultMsg);
+			});
+			
+		}
+
+		function getCustomerDetails() {
+			const id = document.getElementById("getCustomerDetails_id").value;
+
+			const msg = JSON.stringify({
+				commandType: "GET_CUSTOMER_DETAILS",
+				param: JSON.stringify({
+					id
+				})
+			}, null, 4);
+
+			send(msg, (resultMsg) => {
+				// const result = JSON.parse(resultMsg);
+			});
+			
+		}
+
+		function changeCustomerStatus() {
+			const id = document.getElementById("changeCustomerStatus_id").value;
+			const status = document.getElementById("changeCustomerStatus_status").value;
+
+			const msg = JSON.stringify({
+				commandType: "CHANGE_CUSTOMER_STATUS",
+				param: JSON.stringify({
+					id,
+					status
+				})
+			}, null, 4);
+
+			send(msg, (resultMsg) => {
+				// const result = JSON.parse(resultMsg);
+			});
+			
+		}
+
+		function getNotes() {
+			const customerId = document.getElementById("getNotes_customerId").value;
+
+			const msg = JSON.stringify({
+				commandType: "GET_NOTES",
+				param: JSON.stringify({
+					customerId
+				})
+			}, null, 4);
+
+			send(msg, (resultMsg) => {
+				// const result = JSON.parse(resultMsg);
+			});
+			
+		}
+
+		function addNote() {
+			const customerId = document.getElementById("addNote_customerId").value;
+			const content = document.getElementById("addNote_content").value;
+
+			const msg = JSON.stringify({
+				commandType: "ADD_NOTE",
+				param: JSON.stringify({
+					customerId,
+					content
+				})
+			}, null, 4);
+
+			send(msg, (resultMsg) => {
+				// const result = JSON.parse(resultMsg);
+			});
+			
+		}
+
+		function editNote() {
+			const id = document.getElementById("editNote_id").value;
+			const content = document.getElementById("editNote_content").value;
+
+			const msg = JSON.stringify({
+				commandType: "EDIT_NOTE",
+				param: JSON.stringify({
+					id,
+					content
+				})
+			}, null, 4);
+
+			send(msg, (resultMsg) => {
+				// const result = JSON.parse(resultMsg);
+			});
+			
+		}
+
+		function deleteNote() {
+			const id = document.getElementById("deleteNote_id").value;
+
+			const msg = JSON.stringify({
+				commandType: "DELETE_NOTE",
+				param: JSON.stringify({
+					id
+				})
+			}, null, 4);
+
+			send(msg, (resultMsg) => {
+				// const result = JSON.parse(resultMsg);
+			});
+			
+		}
+
+	</script>
+
+</head>
+
+<body>
+
+	<table align="center">
+		<tr><td><h2>Customer</h2></td></tr>
+		<tr>
+			<td>
+				<table style="border: 1px solid black;">
+					
+					<tr>
+						<td>
+							ID:<input type="text" id="getCustomers_id" size="10" value='1'/>
+							<br/>
+							Name:<input type="text" id="getCustomers_name" size="10" value='1'/>
+							<br/>
+							Status:<select id="getCustomers_status">
+									<option value="-1">-</option> 
+								<option value="0">PROSPECTIVE</option> 
+								<option value="1">CURRENT</option> 
+								<option value="2">NON-ACTIVE</option> 
+							</select>
+							<br/>
+							Creation Date Time From:<input type="text" id="getCustomers_creationDateTimeFrom" size="10" value='0'/>
+							<br/>
+							Creation Date Time To:<input type="text" id="getCustomers_creationDateTimeTo" size="10" value='9999999999'/>
+							<br/>
+							Phone:<input type="text" id="getCustomers_phone" size="10" value=''/>
+							<br/>
+							Address:<input type="text" id="getCustomers_address" size="10" value=''/>
+							<br/>
+							Email:<input type="text" id="getCustomers_email" size="10" value=''/>
+						</td>
+					</tr>
+					<tr>
+							<td>
+								<button onclick="getCustomers()">Get Customers</button>
+							</td>
+					</tr>
+				</table>
+			</td>
+			<td>
+					<table style="border: 1px solid black;">
+						
+						<tr>
+							<td>
+								ID:<input type="text" id="getCustomerDetails_id" size="10" value='1'/>
+							</td>
+						</tr>
+						<tr>
+								<td>
+									<button onclick="getCustomerDetails()">Get Customer Details</button>
+								</td>
+						</tr>
+					</table>
+				</td>
+				<td>
+						<table style="border: 1px solid black;">
+							
+							<tr>
+								<td>
+									ID:<input type="text" id="changeCustomerStatus_id" size="10" value='1'/>
+									<br/>
+									Status:<select id="changeCustomerStatus_status">
+										<option value="0">PROSPECTIVE</option> 
+										<option value="1">CURRENT</option> 
+										<option value="2">NON-ACTIVE</option> 
+									</select>
+								</td>
+							</tr>
+							<tr>
+									<td>
+										<button onclick="changeCustomerStatus()">Change Customer Status</button>
+									</td>
+							</tr>
+						</table>
+					</td>
+					
+			
+			</tr>
+			<tr><td><h2>Note</h2></td></tr>
+			<tr>
+					<td>
+							<table style="border: 1px solid black;">
+								
+								<tr>
+									<td>
+										Customer ID:<input type="text" id="getNotes_customerId" size="10" value='1'/>
+									</td>
+								</tr>
+								<tr>
+										<td>
+											<button onclick="getNotes()">Get Notes</button>
+										</td>
+								</tr>
+							</table>
+						</td>
+					<td>
+							<table style="border: 1px solid black;">
+								
+								<tr>
+									<td>
+										Customer ID:<input type="text" id="addNote_customerId" size="10" value='1'/>
+										<br/>
+										Content:<textarea id="addNote_content" rows="3" cols="20" ></textarea>
+									</td>
+								</tr>
+								<tr>
+										<td>
+											<button onclick="addNote()">Add Note</button>
+										</td>
+								</tr>
+							</table>
+						</td>
+						<td>
+								<table style="border: 1px solid black;">
+									
+									<tr>
+										<td>
+											ID:<input type="text" id="editNote_id" size="10" value='1'/>
+											<br/>
+											Content:<textarea id="editNote_content" rows="3" cols="20" ></textarea>
+										</td>
+									</tr>
+									<tr>
+											<td>
+												<button onclick="editNote()">Edit Note</button>
+											</td>
+									</tr>
+								</table>
+							</td>
+						<td>
+								<table style="border: 1px solid black;">
+									
+									<tr>
+										<td>
+											ID:<input type="text" id="deleteNote_id" size="10" value='1'/>
+										</td>
+									</tr>
+									<tr>
+											<td>
+												<button onclick="deleteNote()">Delete Note</button>
+											</td>
+									</tr>
+								</table>
+							</td>
+			</tr>
+			<tr>
+					<td colspan="4">
+							<div>
+								<table align="center">
+									<tr>
+										<td>
+											<h2>OUT</h2>
+											<textarea id="out" name="out" rows="20" cols="150" disabled></textarea>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<h2>IN</h2>
+											<textarea id="in" name="in" rows="20" cols="150" disabled></textarea>
+										</td>
+									</tr>
+								</table>
+							</div>
+							
+						</td>
+			</tr>
+	</table>
+
+</body>
+
+</html>
