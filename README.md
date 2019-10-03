@@ -1,5 +1,9 @@
 # TechnicalTest
 
+## Prerequisites
+OpenJDK 12.0.1 or above
+MariaDB 10.3.15 or above
+
 ## How to build
 
 To build the project, run 'gradle fatJar'.
